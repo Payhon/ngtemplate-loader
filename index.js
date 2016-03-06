@@ -47,8 +47,15 @@ module.exports = function (content) {
     } else {
         html = content;
     }
+    
+    var oPath = jsesc(filePath);
+    
+    if(ngModule.substr(0,1) == '.'){
+		var dirs = oPath.split(pathSep);
+		ngModule = dirs[0]+ngModule;
+	}
 
-    return "var path = '"+jsesc(filePath)+"';\n" +
+    return "var path = '"+oPath+"';\n" +
         "var html = " + html + ";\n" +
         "window.angular.module('" + ngModule + "').run(['$templateCache', function(c) { c.put(path, html) }]);\n" +
         "module.exports = path;";
